@@ -78,7 +78,7 @@ p + geom_bar(aes(fill=Terminology_Type), width = 0.5) +
   #theme_minimal() +
   scale_y_continuous(breaks=seq(0, 44, 2)) +
   #theme(axis.text.x = element_text(angle=65, vjust=0.6)) + 
-  labs(title="Articles published by scholarly type", 
+  labs(title="Articles published by scholarly article type", 
        subtitle="# of Publications across critical quantitative paradigms",
        x = "",
        y = "# of publications") +
@@ -158,7 +158,7 @@ treemap(journals,
 journals <- journals %>%
   filter(!is.na(Value) & !startsWith(Journal, "Book") & Journal != "Dissertation") %>%
   mutate(ed = ifelse(Journal %in% c("The Professional Geographer", "Race, Gender, and Class",
-                                    "Annals of American Association of Geographers", "Applied Geography",
+                                    "Annals of the American Association of Geographers", "Applied Geography",
                                     "Critical Public Health", "Digital Societies", "Environment and Planning A",
                                     "Frontiers in Big Data", "International Journal of Sexual Health",
                                     "Journal of Family Theory and Review", "Journal of Poverty",
@@ -185,7 +185,7 @@ journals %>% filter(ed==0) %>% dplyr::select(!ed) %>% gt()
 journals <- journals %>%
   mutate(discipline = case_when(
     ed == 1 ~ "Education",
-    Journal %in% c("The Professional Geographer", "Applied Geography") ~ "Geography",
+    Journal %in% c("The Professional Geographer", "Applied Geography", "Annals of the American Association of Geographers") ~ "Geography",
     Journal %in% c("Digital Societies", "Frontiers in Big Data") ~ "Digital Studies & Big Data",
     Journal %in% c("Critical Public Health", "Journal of Racial and Ethnic Health Disparities", "International Journal of Sexual Health") ~ "Public Health",
     Journal %in% c("Journal of Poverty", "Social Science Research", "The Journal of Pan African Studies", "Race, Gender, and Class") ~ "Race, Gender, & Social Sciences",
@@ -245,6 +245,11 @@ View(analysis %>%
        dplyr::select(Journal, Citation, Year) %>%
        filter(Journal=="New Directions for Institutional Research"))
 
-
+#group by article type and critical framework and get a count of each group
+View(analysis %>%
+  group_by(Terminology_Type, Article_Type) %>%
+  summarise(n_per_grp = n()))
 #edit methods section
 #work on figures 
+
+journals %>% gt()

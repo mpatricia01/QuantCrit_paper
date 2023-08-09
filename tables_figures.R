@@ -51,8 +51,8 @@ yr_type2 <- yr_type %>%
 yr_type2 %>% filter(Year != 1989 & !is.na(Terminology_Type)) %>% #remove NAs for now
   ggplot() + 
   geom_col(aes(x = Year, y= count_yr_type, fill=Terminology_Type), width = 0.5) + 
-  #geom_text(aes(x = Year, y= count_yr_type, label = count_yr_type)) + 
-  #theme_minimal() + 
+  #geom_text(aes(label = after_stat(count_yr_type)), stat = "count", position = "fill") + 
+  #theme_minimal() geom+ 
   #theme(axis.text.x = element_text(angle=65, vjust=0.6)) + 
   scale_x_continuous(breaks=seq(2000, 2022, 1)) + 
   labs(title="Critical Quantitative articles published from 2000-2022", 
@@ -95,8 +95,8 @@ analysis %>%
 #graph for years published by quantcrit or critquant
 #wordcloud of journal articles
 
-analysis %>%
-  count(Journal)
+View(analysis %>%
+  count(Journal))
 
 #create a df for count of journals
 journals <- analysis %>%
@@ -180,6 +180,8 @@ journals %>% filter(ed==1) %>% dplyr::select(!ed) %>% gt()
 journals %>% filter(ed==0) %>% dplyr::select(!ed) %>% gt()
 
 
+View(analysis %>% dplyr::select("Journal") %>% filter(startsWith(Journal, "Book") & Journal == "Dissertation"))
+
 
 #create discipline categories
 journals <- journals %>%
@@ -224,7 +226,7 @@ disciplines %>%
     legend.position="none"
   ) +
   xlab("") +
-  ylab("Number of articles by Journal discipline")
+  ylab("Number of articles by Journal discipline \n *Book chapters excluded from plot") 
 
 
 
